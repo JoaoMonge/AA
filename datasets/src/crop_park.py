@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 30 13:21:17 2015
-
-@author: elad
-"""
 
 import yaml
 import numpy as np
 import cv2
+import fileops as fp
 print '\n',cv2.__version__,'\n'
 
 # paths of the imgs
@@ -161,9 +157,9 @@ frame = cv2.imread(imgs[img])
 
 
 
+
 while True:
     # Display imgs
-
     cv2.imshow(img, frame)
     k = cv2.waitKey(1)
     if k == ord('q'):
@@ -172,6 +168,9 @@ while True:
 
 
 print '\nFinal rectangles(park spots)', print_parking_data,'\n'
+
+#save spots to file
+fp.wfile(print_parking_data,img_out+'.txt')
 
 print
 print "============================="
