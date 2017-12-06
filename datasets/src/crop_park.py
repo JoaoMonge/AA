@@ -24,7 +24,7 @@ imgs={
 'trig6':     '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/imgs/imgs-full-parks/normal/trig/trigg6.png',
 'trig7':     '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/imgs/imgs-full-parks/normal/trig/trigg7.png',
 }
-img='trig7'
+img='highway'
 
 # paths of the imgs
 typpes={
