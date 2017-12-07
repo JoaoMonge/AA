@@ -8,20 +8,15 @@ import os
 
 import sys
 sys.path.append('/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/src')
-import fileops
+import fileops as fp
 
-def get_acc(classifier):
+def get_acc(classifier,images_path):
     print
 
     # classifier=''
 
     car_cascade = cv2.CascadeClassifier(classifier)
     index = 0
-
-    # images_path='/home/js/Desktop/comp/emel/parkingLotCounter/classifiers/datasets/ankit_dataset/negative'
-    # Accuracy after evaluating 1570 frames and assuming correct identification:  25 %
-
-    images_path='/home/js/Desktop/comp/emel/parkingLotCounter/classifiers/datasets/ankit_dataset/positive'
 
     direc = os.listdir(images_path)
     
@@ -53,28 +48,38 @@ def get_acc(classifier):
         
         # print index,'\n'
 
-    print index
+    # print index
     percentage = index*100/total
-
-
-    accuraccy="Accuracy after evaluating",total," frames and assuming correct identification: ",percentage,"%"
-    print s
     
-    dataset=('_').join(images_path.split("/")[-2:])
+    imgs=('_').join(images_path.split("/")[-2:])
 
     cl=('_').join(classifier.split("/")[-2:])
 
+    print "Accuracy after evaluating the classifer"+cl+" with the dataset "+imgs+" with "+str(total)+" imgs and assuming correct identification: "+str(percentage)+"%"
 
-    wfile(s,fp.paths['ACCURACY_TEST_DIR']+cl+dataset+'.txt')
+    # out_path=fp.paths['ACCURACY_TEST_DIR']+cl+'_'+imgs+'.txt'
+    out_path=fp.paths['ACCURACY_TEST_DIR']+'accuracy-results.txt'
+
+    result={
+        'dataset':imgs,
+        'classifer':cl,
+        'accuracy':percentage
+    }
+    fp.aafile(result,out_path)
 
     cv2.destroyAllWindows()
-    return percentage
+    # return percentage
 
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-cl", "--classifier", required=True, help="Path to the classifier")
+ap.add_argument("-imgs", "--images", required=True, help="Path to the images")
+
 args = vars(ap.parse_args())
 # load the class, start the acc tester
-get_acc(args["classifier"])
+get_acc(args["classifier"],args["images"])
 # get_acc(args["classifier"])
+
+
+
