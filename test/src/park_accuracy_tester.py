@@ -10,7 +10,18 @@ import sys
 sys.path.append('/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/src')
 import fileops as fp
 
-def get_acc(classifier,images_path):
+
+classifiers={
+'our-lbt':          '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/LBP_ankit_imgs.xml',
+'our-harr' :        '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/HAAR_ankit_imgs.xml',
+'our-harr-small' :  '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/HAAR_small_ankit_imgs.xml',
+'ankit-haar' :      '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/ankit_class/ankit-haar.xml',
+'ankit-haar2' :     '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/ankit_class/ankit-haar2.xml'
+}
+
+
+
+def get_acc(classifier=None,images_path):
     print
 
     # classifier=''
@@ -48,6 +59,9 @@ def get_acc(classifier,images_path):
         
         # print index,'\n'
 
+
+
+
     # print index
     percentage = index*100/total
     
@@ -73,10 +87,13 @@ def get_acc(classifier,images_path):
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-cl", "--classifier", required=True, help="Path to the classifier")
+ap.add_argument("-cl", "--classifier", required=False, help="Path to the classifier")
 ap.add_argument("-imgs", "--images", required=True, help="Path to the images")
 
 args = vars(ap.parse_args())
+
+if len(args=2):
+    
 # load the class, start the acc tester
 get_acc(args["classifier"],args["images"])
 # get_acc(args["classifier"])

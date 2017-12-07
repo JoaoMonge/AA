@@ -1,7 +1,9 @@
 import json
 import os
-paths={
-'ACCURACY_TEST_DIR':'/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/accuracy_tests/'
+
+DIRS={
+'OPENCV-ACCURACY_TEST' : '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/accuracy_tests/',
+'OPENCV-FULLPARK-RESULT' : '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/results_class_full_img/'
 }
 
 

@@ -3,12 +3,32 @@
 import cv2
 # import time as Time
 
+import sys
+sys.path.append('/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/src')
+import fileops as fp
+
+print
+
+'''
+This script generates images with rectangles over the detected cars,
+only works for classifiers that are built with OPENCV or follow its structure (of the classf)
+
+save the results in the /results_class_full_img dir with the name class+video+'.jpg'
+
+classifer-> all calssfiers to test in each video
+videos->  1st frame of each video is used to apply the classififers above
+
+'''
+
+
 classifier={
-'our-lbt':      '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/our_class/banana_classifier_LBP_ankit_imgs.xml',
-'our-harr' :    '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/our_class/banana_classifier_HAAR_ankit_imgs.xml',
-'ankit-haar' :  '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/ankit_class/Khare_classifier_02.xml',
-'ankit-lbt' :   '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/ankit_class/Khare_classifier_01.xml'
+'our-lbt':          '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/LBP_ankit_imgs.xml',
+'our-harr' :        '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/HAAR_ankit_imgs.xml',
+'our-harr-small' :  '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/HAAR_small_ankit_imgs.xml',
+'ankit-haar' :      '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/ankit_class/ankit-haar.xml',
+'ankit-haar2' :     '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/ankit_class/ankit-haar2.xml'
 }
+
 
 videos={
 'ankit':    '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/videos/ankit.mp4',
@@ -18,23 +38,36 @@ videos={
 'trig':     '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/videos/trigg.mp4'
 }
 
+
+params={
+'save': True
+}
+
+
 for cl in classifier.keys():
     for vid in videos.keys():
+        print '\n\nNext:'
 
-        params={
-            'classifier_path' : classifier[cl],
-            'video_path' : videos[vid],
-            'save':True
-        }
+        params['classifier_path'] = classifier[cl]
+        params['video_path'] = videos[vid]
 
-        print('Chosen parameters:',cl,vid)
-        
-        save_path='/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/results/'+cl+'_'+vid+'.png'
+        print 'iteration parameters: \n-',cl,'\n-',vid
+        print
 
-        # capture frames from a video
+        print 'iteration paths: \n-',params['classifier_path'],'\n-',params['video_path']
+        print
+
+        save_path=fp.DIRS['OPENCV-FULLPARK-RESULT']+cl+'_'+vid+'.png'
+
+        # start video iteration
         cap = cv2.VideoCapture(params['video_path'])
-        print cap.isOpened()
-        
+        if cap.isOpened():
+            print 'Video opened'
+        else:
+            print 'Video error in open'
+            raise
+        print
+
         # Trained XML classifiers describes some features of some object we want to detect
         car_cascade = cv2.CascadeClassifier(params['classifier_path'])
         
@@ -55,9 +88,12 @@ for cl in classifier.keys():
                     cv2.rectangle(frames,(x,y),(x+w,y+h),(0,0,255),2)
                     
                 # save imge
-                if params['save'] and len(cars)>3:
-                    # cv2.imwrite(save_path,frames)
-                    cv2.imwrite('./ahha.png',frames)
+                if params['save'] and len(cars)!=0:
+
+                    print 'Saving img with name',save_path
+
+                    cv2.imwrite(save_path,frames)
+                    # cv2.imwrite('./ahha.png',frames)
                     # De-allocate any associated memory usage
                     cv2.destroyAllWindows()
                     break
@@ -73,4 +109,6 @@ for cl in classifier.keys():
                 # De-allocate any associated memory usage
                 cv2.destroyAllWindows()
         except:
-            print 'Error in', cl,vid
+            print 'Error in ', cl,' , ',vid
+            raise
+
