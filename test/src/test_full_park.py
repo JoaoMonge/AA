@@ -7,13 +7,16 @@ import sys
 sys.path.append('/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/src')
 import fileops as fp
 
-print
+from utils import *
+
+
+
 
 '''
-This script generates images with rectangles over the detected cars,
-only works for classifiers that are built with OPENCV or follow its structure (of the classf)
+Generate images with rectangles over the detected cars,
+only works for classifiers that are built with OPENCV or follow its structure (xml of the classf)
 
-save the results in the /results_class_full_img dir with the name class+video+'.jpg'
+saves the results in the /results_class_full_img dir with the name class+video+'.jpg'
 
 classifer-> all calssfiers to test in each video
 videos->  1st frame of each video is used to apply the classififers above
@@ -21,13 +24,15 @@ videos->  1st frame of each video is used to apply the classififers above
 '''
 
 
-classifier={
-'our-lbt':          '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/LBP_ankit_imgs.xml',
-'our-harr' :        '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/HAAR_ankit_imgs.xml',
-'our-harr-small' :  '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/HAAR_small_ankit_imgs.xml',
-'ankit-haar' :      '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/ankit_class/ankit-haar.xml',
-'ankit-haar2' :     '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/ankit_class/ankit-haar2.xml'
-}
+# classifier={
+
+# 'our-lbt':          '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/LBP_ankit_imgs.xml',
+# 'our-harr' :        '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/HAAR_ankit_imgs.xml',
+# 'our-harr-small' :  '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/our_class/HAAR_small_ankit_imgs.xml',
+# 'ankit-haar' :      '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/ankit_class/ankit-haar.xml',
+# 'ankit-haar2' :     '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/classifiers_opencv/ankit_class/ankit-haar2.xml'
+
+# }
 
 
 videos={
@@ -39,37 +44,36 @@ videos={
 }
 
 
-params={
+defs={
 'save': True
 }
 
 
-for cl in classifier.keys():
+for cl in classifiers.keys():
     for vid in videos.keys():
-        print '\n\nNext:'
+        print '\n\nNext Combination:'
 
-        params['classifier_path'] = classifier[cl]
-        params['video_path'] = videos[vid]
+        defs['classifier_path'] = classifiers[cl]
+        defs['video_path'] = videos[vid]
 
-        print 'iteration parameters: \n-',cl,'\n-',vid
-        print
+        print 'iteration parameters: \n-',cl,'\n-',vid,'\n'
 
-        print 'iteration paths: \n-',params['classifier_path'],'\n-',params['video_path']
-        print
+        print 'iteration paths: \n-',defs['classifier_path'],'\n-',defs['video_path'],'\n'
 
         save_path=fp.DIRS['OPENCV-FULLPARK-RESULT']+cl+'_'+vid+'.png'
 
         # start video iteration
-        cap = cv2.VideoCapture(params['video_path'])
+        cap = cv2.VideoCapture(defs['video_path'])
         if cap.isOpened():
-            print 'Video opened'
+            print 'Video opened\n'
         else:
-            print 'Video error in open'
-            raise
+            
+            print 'Error in opening video, bye!\n'
+            exit()
         print
 
         # Trained XML classifiers describes some features of some object we want to detect
-        car_cascade = cv2.CascadeClassifier(params['classifier_path'])
+        car_cascade = cv2.CascadeClassifier(defs['classifier_path'])
         
         # loop runs if capturing has been initialized.
         try:
@@ -87,18 +91,17 @@ for cl in classifier.keys():
                 for (x,y,w,h) in cars:
                     cv2.rectangle(frames,(x,y),(x+w,y+h),(0,0,255),2)
                     
-                # save imge
-                if params['save'] and len(cars)!=0:
+                # save img when more then 4 cars are detected
+                if defs['save'] and len(cars)>4:
 
                     print 'Saving img with name',save_path
-
                     cv2.imwrite(save_path,frames)
-                    # cv2.imwrite('./ahha.png',frames)
+
                     # De-allocate any associated memory usage
                     cv2.destroyAllWindows()
                     break
 
-                # Display frames in a window 
+                ## Display frames in a window 
                 # cv2.imshow(save_path, frames)
                 # Time.sleep(0.01)
 

@@ -22,7 +22,7 @@ videos={
 'trig':     '/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/videos/trigg.mp4'
 }
 
-cl=classifier['ankit-haar   ']
+cl=classifier['ankit-haar']
 vid=videos['highway']
 save_path='/home/js/Documents/comp/emel/parkingLotCounter/classifiers/test/results/'+cl+'_'+vid+'.png'
 

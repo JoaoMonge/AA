@@ -3,7 +3,10 @@ from PIL import Image
 import sys
 os.system
 
+#number/name of the photos
 i=0
+
+# dir to look for invalid
 dirr="/home/js/Documents/comp/emel/parkingLotCounter/classifiers/datasets/new-mixed/negative/"
 
 
