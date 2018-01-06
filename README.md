@@ -1,11 +1,11 @@
 # AA
 
-# Machine Learning Study on no-feature classifiers for a smart cat parkign systems based on camera images
+# Machine Learning Study on no-feature classifiers for a smart car parking systems based on camera images
 
 # Folders
 ## /datasets has all the images collected
 
-## /tensor for traing tensorflow transfer learning models
+## /tensor for training tensorflow transfer learning models
 
 ## /opencv-haar(...) used for training haar and lbt classifers with opencv libraries
 
